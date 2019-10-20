@@ -24,10 +24,16 @@ dependencies:
   cupertino_icons: ^0.1.2
   # GraphQl client
   graphql_flutter: ^2.0.0
+  # Defines the annotations used by json_serializable
+  json_annotation: ^2.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # Provides a way to generate files using Dart code
+  build_runner: ^1.0.0
+  # Provides a dart build system that generates code when they find member annotated with classes defined in json_annotation
+  json_serializable: ^3.0.0
 
 flutter:
 
