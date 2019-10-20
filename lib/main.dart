@@ -16,7 +16,7 @@ class QookingApp extends StatelessWidget {
           ),
           home: MyHomePage(title: 'Qooking'),
           debugShowCheckedModeBanner: false),
-      client: getGraphQLClient(),
+      client: getGraphQLClient(config.apiBaseUrl),
     );
   }
 }
@@ -41,25 +41,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var config = AppConfig.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('This is the ${config.env} app.'),
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+      body: Query(
+        options: QueryOptions(
+            document: "query {allRecipes{id,title}}"
         ),
+        builder: (QueryResult result,
+            { VoidCallback refetch, FetchMore fetchMore}) {
+          if (result.errors != null) {
+            return Text(result.errors.toString());
+          }
+
+          if (result.loading) {
+            return Text('Loading');
+          }
+
+          // it can be either Map or List
+          List recipes = result.data['allRecipes'];
+
+          return ListView.builder(
+              itemCount: recipes.length,
+              itemBuilder: (context, index) {
+                final recipe = recipes[index];
+
+                return Text(recipe['title']);
+              });
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
