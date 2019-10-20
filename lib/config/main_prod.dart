@@ -7,7 +7,7 @@ import 'package:qooking_app/main.dart';
 void main() {
   var configuredApp = new AppConfig(
     env: 'production',
-    apiBaseUrl: 'https://www.qoqa.com/graphql',
+    apiBaseUrl: 'https://api.qoqa.com/api/graphql',
     child: new QookingApp(),
   );
 

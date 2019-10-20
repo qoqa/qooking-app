@@ -77,3 +77,4 @@ lib/generated_plugin_registrant.dart
 
 # Dev config
 lib/config/main_dev.dart
+lib/generated/i18n.dart
