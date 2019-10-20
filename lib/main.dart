@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:qooking_app/config/app_config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:qooking_app/utils/graphql_client.dart';
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Query(
         options: QueryOptions(
-            document: "query {allRecipes{id,title}}"
+            document: "query {allRecipes{id,title,thumbnailUrl}}"
         ),
         builder: (QueryResult result,
             { VoidCallback refetch, FetchMore fetchMore}) {
@@ -66,8 +67,25 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: recipes.length,
               itemBuilder: (context, index) {
                 final recipe = recipes[index];
-
-                return Text(recipe['title']);
+                return AspectRatio(
+                  aspectRatio: 3 / 2,
+                  child: Stack(
+                    alignment: const Alignment(0, 0),
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Image.network(
+                            recipe['thumbnailUrl'],
+                            fit: BoxFit.cover
+                        )
+                      ),
+                      Text(
+                        recipe['title'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black, fontSize: 30),
+                      )
+                    ],
+                  )
+                );
               });
         },
       ),
