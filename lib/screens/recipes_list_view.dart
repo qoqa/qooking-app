@@ -45,8 +45,21 @@ class RecipeListViewState extends State<RecipeListView> {
             return Center(child: Text("No Data Found !"));
           }
 
-          return Center(child: Text("No Data Found !"));
-
+          return ListView.builder(
+            itemCount: result.data['allRecipes'].length,
+            itemBuilder: (context, index) {
+              List<String> jsonRecipe = [];
+              result.data['allRecipes'][index].forEach((k, v) {
+                if (v is String) {
+                  jsonRecipe.add('"${k}": "${v}"');
+                } else {
+                  jsonRecipe.add('"${k}": ${v}');
+                }
+              });
+              final recipe = Recipe.fromJson(jsonDecode("{" + jsonRecipe.join(',') + "}"));
+              return buildRow(recipe);
+            }
+          );
         }
       )
     );
